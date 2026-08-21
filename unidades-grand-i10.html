@@ -40,7 +40,7 @@
 <body class="bg-ink text-white antialiased">
 
 <script>
-  const WA_NUMBER = "50760000000"; // TODO: reemplazar con número real de la empresa
+  const WA_NUMBER = "50768290144"; // Multiservicios RML - WhatsApp real
   function waLink(message) { return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`; }
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("[data-wa-msg]").forEach(el => el.href = waLink(el.getAttribute("data-wa-msg")));
