@@ -61,12 +61,79 @@
   .faq-chevron { transition: transform .25s ease; }
   details summary::-webkit-details-marker { display:none; }
 
-  .car-card { transition: transform .2s ease, border-color .2s ease; }
-  .car-card:hover { transform: translateY(-4px); border-color:#F2B705; }
+  .car-card { transition: transform .35s cubic-bezier(.16,1,.3,1), border-color .35s ease, box-shadow .35s ease; }
+  .car-card:hover { transform: translateY(-6px); border-color:#F2B705; box-shadow: 0 20px 40px -20px rgba(242,183,5,.35); }
+  .car-card .car-img { transition: transform .5s cubic-bezier(.16,1,.3,1); }
+  .car-card:hover .car-img { transform: scale(1.06); }
+
+  /* ---- Preloader: dibujo del logo con stroke-dashoffset ---- */
+  #preloader {
+    position: fixed; inset: 0; z-index: 100; background:#0A0A0A;
+    display:flex; align-items:center; justify-content:center;
+    transition: opacity .6s ease, visibility .6s ease;
+  }
+  #preloader.hide { opacity:0; visibility:hidden; pointer-events:none; }
+  #preloader svg circle { stroke-dasharray: 300; stroke-dashoffset: 300; animation: draw-ring 1.1s ease forwards; }
+  #preloader svg path { stroke-dasharray: 160; stroke-dashoffset: 160; animation: draw-ring 1.1s .15s ease forwards; }
+  @keyframes draw-ring { to { stroke-dashoffset: 0; } }
+
+  /* ---- Barra de progreso de scroll ---- */
+  #scroll-progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: linear-gradient(90deg, #F2B705, #B98A02);
+    z-index: 60; transition: width .1s linear;
+  }
+
+  /* ---- Reveal on scroll ---- */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); }
+  .reveal-stagger > * { opacity: 0; transform: translateY(20px); transition: opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1); }
+  .reveal-stagger.is-visible > *:nth-child(1) { transition-delay: .05s; }
+  .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: .15s; }
+  .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: .25s; }
+  .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: .35s; }
+  .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: .45s; }
+  .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: .55s; }
+
+  /* ---- Hero: entrada escalonada al cargar ---- */
+  .hero-in { opacity: 0; transform: translateY(18px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+  .hero-in.is-in { opacity: 1; transform: translateY(0); }
+
+  /* ---- Botón con brillo (shine sweep) ---- */
+  .btn-shine { position: relative; overflow: hidden; }
+  .btn-shine::after {
+    content: ''; position: absolute; top: 0; left: -75%; width: 50%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent);
+    transform: skewX(-20deg);
+  }
+  .btn-shine:hover::after { animation: shine-sweep .9s ease forwards; }
+  @keyframes shine-sweep { to { left: 130%; } }
+
+  /* ---- Nav con sombra al hacer scroll ---- */
+  #site-nav { transition: box-shadow .3s ease, background-color .3s ease; }
+  #site-nav.scrolled { box-shadow: 0 8px 24px -12px rgba(0,0,0,.6); }
+
+  /* ---- Fondo hero: aurora sutil ---- */
+  .aurora { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+  .aurora span { position:absolute; border-radius:9999px; filter: blur(60px); opacity:.18; animation: aurora-float 14s ease-in-out infinite; }
+  .aurora span:nth-child(1){ width:340px; height:340px; background:#F2B705; top:-80px; right:-60px; }
+  .aurora span:nth-child(2){ width:260px; height:260px; background:#0A3161; bottom:-60px; left:-40px; animation-delay: -6s; }
+  @keyframes aurora-float { 0%,100% { transform: translate(0,0) scale(1);} 50% { transform: translate(20px,-20px) scale(1.08);} }
+
+  /* ---- Proceso: línea que se llena y círculo que se activa ---- */
+  .step-line-fill { position:absolute; top:0; left:0; height:100%; width:0%; background:#F2B705; transition: width 1s cubic-bezier(.16,1,.3,1); }
+  .step-circle { transition: box-shadow .5s ease, background-color .5s ease, border-color .5s ease; }
+  .step-circle.is-active { box-shadow: 0 0 0 6px rgba(242,183,5,.15); }
+
+  /* ---- Contador ---- */
+  .stat-num { font-variant-numeric: tabular-nums; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .car-card, .faq-chevron { transition: none; }
+    .car-card, .faq-chevron, .car-img, .reveal, .reveal-stagger > *, .hero-in, .btn-shine::after, .aurora span, .step-line-fill, .step-circle { transition: none; animation: none; }
+    .reveal, .reveal-stagger > *, .hero-in { opacity: 1; transform: none; }
+    #preloader { display: none; }
   }
 
   a:focus-visible, button:focus-visible, summary:focus-visible {
@@ -76,6 +143,18 @@
 </head>
 
 <body class="bg-ink text-white antialiased">
+
+<!-- Preloader minimalista: anillo dorado que se dibuja -->
+<div id="preloader" aria-hidden="true">
+  <svg width="72" height="72" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="42" fill="none" stroke="#2A2A2A" stroke-width="4"/>
+    <circle cx="50" cy="50" r="42" fill="none" stroke="#F2B705" stroke-width="4" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+    <path d="M30 55 L44 65 L72 35" fill="none" stroke="#F2B705" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</div>
+
+<!-- Barra de progreso de scroll -->
+<div id="scroll-progress"></div>
 
 <!-- =========================================================
      CONFIG: número y mensajes de WhatsApp centralizados.
@@ -109,6 +188,99 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") document.querySelectorAll("[data-dropdown-menu]").forEach(m => m.classList.add("hidden"));
     });
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Preloader: ocultar cuando la página termina de cargar
+    const preloader = document.getElementById("preloader");
+    const finishPreload = () => preloader && preloader.classList.add("hide");
+    window.addEventListener("load", () => setTimeout(finishPreload, reduceMotion ? 0 : 500));
+    setTimeout(finishPreload, 2500); // seguro por si 'load' tarda
+
+    // Entrada escalonada del hero
+    requestAnimationFrame(() => {
+      document.querySelectorAll(".hero-in").forEach(el => el.classList.add("is-in"));
+    });
+
+    // Barra de progreso de scroll + sombra del nav
+    const progressBar = document.getElementById("scroll-progress");
+    const nav = document.getElementById("site-nav");
+    const onScroll = () => {
+      const h = document.documentElement;
+      const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+      if (progressBar) progressBar.style.width = scrolled + "%";
+      if (nav) nav.classList.toggle("scrolled", h.scrollTop > 8);
+    };
+    document.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    // Reveal on scroll (fade + slide al entrar en pantalla)
+    if ("IntersectionObserver" in window) {
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll(".reveal, .reveal-stagger").forEach(el => revealObserver.observe(el));
+
+      // Contadores animados
+      const animateCounter = (el) => {
+        const target = parseFloat(el.getAttribute("data-count-to"));
+        const suffix = el.getAttribute("data-suffix") || "";
+        const prefix = el.getAttribute("data-prefix") || "";
+        const decimals = el.getAttribute("data-decimals") ? parseInt(el.getAttribute("data-decimals")) : 0;
+        const duration = 1400;
+        const start = performance.now();
+        const step = (now) => {
+          const p = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = prefix + (target * eased).toFixed(decimals) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      };
+      const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      document.querySelectorAll("[data-count-to]").forEach(el => counterObserver.observe(el));
+
+      // Proceso: activar círculo y llenar línea al llegar cada paso
+      const stepObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const circle = entry.target.querySelector(".step-circle");
+            if (circle) circle.classList.add("is-active");
+            const fillId = entry.target.getAttribute("data-fill-target");
+            if (fillId) {
+              const fillEl = document.getElementById(fillId);
+              if (fillEl) fillEl.style.width = "100%";
+            }
+            stepObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.6 });
+      document.querySelectorAll("[data-step]").forEach(el => stepObserver.observe(el));
+    } else {
+      // Fallback sin IntersectionObserver: mostrar todo directamente
+      document.querySelectorAll(".reveal, .reveal-stagger").forEach(el => el.classList.add("is-visible"));
+    }
+
+    // Parallax sutil de la imagen del hero
+    const heroImg = document.getElementById("hero-parallax");
+    if (heroImg && !reduceMotion) {
+      document.addEventListener("scroll", () => {
+        const offset = window.scrollY * 0.08;
+        heroImg.style.transform = `translateY(${offset}px)`;
+      }, { passive: true });
+    }
   });
 </script>
 
@@ -125,7 +297,7 @@
 </div>
 
 <!-- Barra de navegación: sticky y compacta -->
-<header class="sticky top-0 z-40 bg-ink/95 backdrop-blur border-b border-gold/20">
+<header id="site-nav" class="sticky top-0 z-40 bg-ink/95 backdrop-blur border-b border-gold/20">
   <nav class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
     <div class="flex items-center gap-5 sm:gap-7 text-xs sm:text-sm font-bold uppercase tracking-wide text-white/80">
       <a href="#top" class="hover:text-gold transition-colors">Inicio</a>
@@ -145,7 +317,7 @@
       </div>
     </div>
     <a href="#" data-wa-msg="Hola, quiero cotizar un auto con opción a compra en Panamá."
-       class="hidden sm:inline-flex items-center gap-2 bg-wa hover:bg-wa-600 text-ink font-bold text-sm px-4 py-2.5 rounded-full transition-colors flex-shrink-0">
+       class="btn-shine hidden sm:inline-flex items-center gap-2 bg-wa hover:bg-wa-600 text-ink font-bold text-sm px-4 py-2.5 rounded-full transition-colors flex-shrink-0">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.13-2.9-7C17.18 3.03 14.69 2 12.04 2Zm5.8 14.15c-.24.68-1.4 1.32-1.94 1.4-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.16-4.94-4.36-.14-.2-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.83 2 .9 2.15.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.3.38-.44.51-.15.14-.3.3-.13.58.17.28.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.29.15.46.13.63-.08.17-.2.72-.84.91-1.13.19-.28.38-.24.63-.14.26.1 1.65.78 1.93.92.29.14.48.21.55.33.07.12.07.68-.17 1.36Z"/></svg>
       Cotizar por WhatsApp
     </a>
@@ -159,20 +331,22 @@
   <!-- esquina diagonal dorada, eco de los banderines cruzados del logo -->
   <div class="pointer-events-none absolute -right-32 -top-32 w-[26rem] h-[26rem] rotate-45 bg-gold/10"></div>
   <div class="pointer-events-none absolute -left-24 bottom-0 w-72 h-72 rounded-full bg-pblue/20 blur-3xl"></div>
+  <!-- Aurora sutil: movimiento ambiental, muy tenue -->
+  <div class="aurora"><span></span><span></span></div>
 
   <div class="relative max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-14 md:pt-20 md:pb-24 grid md:grid-cols-2 gap-10 items-center">
     <div>
-      <span class="inline-flex items-center gap-2 bg-gold/10 text-gold text-xs font-bold tracking-widest uppercase px-3 py-1.5 rounded-full border border-gold/30">
+      <span class="hero-in inline-flex items-center gap-2 bg-gold/10 text-gold text-xs font-bold tracking-widest uppercase px-3 py-1.5 rounded-full border border-gold/30">
         Alquiler con opción a compra en Panamá
       </span>
-      <h1 class="mt-5 font-display font-bold text-white text-3xl sm:text-4xl md:text-5xl leading-tight">
+      <h1 class="hero-in mt-5 font-display font-bold text-white text-3xl sm:text-4xl md:text-5xl leading-tight" style="transition-delay:.08s">
         Tu propio auto en Panamá,<br class="hidden sm:block"> sin trámites bancarios
       </h1>
-      <p class="mt-5 text-white/70 text-base sm:text-lg leading-relaxed max-w-lg font-body normal-case">
+      <p class="hero-in mt-5 text-white/70 text-base sm:text-lg leading-relaxed max-w-lg font-body normal-case" style="transition-delay:.16s">
         Maneja hoy y ve construyendo tu compra con cada pago. Sin buró de crédito, sin fiador y con mantenimiento incluido en todo el contrato — solo tú, las llaves y el camino.
       </p>
 
-      <ul class="mt-6 space-y-2.5 text-white/85 text-sm sm:text-base">
+      <ul class="hero-in mt-6 space-y-2.5 text-white/85 text-sm sm:text-base" style="transition-delay:.24s">
         <li class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center text-gold flex-shrink-0">✓</span> Sin banco ni fiador</li>
         <li class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center text-gold flex-shrink-0">✓</span> Aprobación rápida por WhatsApp</li>
         <li class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center text-gold flex-shrink-0">✓</span> Ideal para plataformas: Uber, inDrive, DiDi</li>
@@ -180,28 +354,48 @@
         <li class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center text-gold flex-shrink-0">✓</span> Abono inicial desde $200, negociable</li>
       </ul>
 
-      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+      <div class="hero-in mt-8 flex flex-col sm:flex-row gap-3" style="transition-delay:.32s">
         <a href="#" data-wa-msg="Hola, quiero cotizar un auto con opción a compra en Panamá."
-           class="inline-flex items-center justify-center gap-2 bg-wa hover:bg-wa-600 text-ink font-bold text-base px-6 py-3.5 rounded-full shadow-lg shadow-wa/20 transition-colors">
+           class="btn-shine inline-flex items-center justify-center gap-2 bg-wa hover:bg-wa-600 text-ink font-bold text-base px-6 py-3.5 rounded-full shadow-lg shadow-wa/20 transition-colors">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.13-2.9-7C17.18 3.03 14.69 2 12.04 2Zm5.8 14.15c-.24.68-1.4 1.32-1.94 1.4-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.16-4.94-4.36-.14-.2-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.83 2 .9 2.15.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.3.38-.44.51-.15.14-.3.3-.13.58.17.28.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.29.15.46.13.63-.08.17-.2.72-.84.91-1.13.19-.28.38-.24.63-.14.26.1 1.65.78 1.93.92.29.14.48.21.55.33.07.12.07.68-.17 1.36Z"/></svg>
           Cotizar por WhatsApp
         </a>
         <a href="#catalogo"
-           class="inline-flex items-center justify-center gap-2 border border-gold/40 hover:bg-gold/10 text-gold font-bold text-base px-6 py-3.5 rounded-full transition-colors">
+           class="btn-shine inline-flex items-center justify-center gap-2 border border-gold/40 hover:bg-gold/10 text-gold font-bold text-base px-6 py-3.5 rounded-full transition-colors">
           Ver catálogo de autos
         </a>
       </div>
 
-      <p class="mt-4 text-white/40 text-xs font-body normal-case">Empresa panameña · Contratos claros · Sin letras pequeñas</p>
+      <p class="hero-in mt-4 text-white/40 text-xs font-body normal-case" style="transition-delay:.4s">Empresa panameña · Contratos claros · Sin letras pequeñas</p>
     </div>
 
     <!-- Hero visual: imagen de promo real de la empresa -->
-    <div class="relative flex justify-center md:justify-end">
-      <div class="relative w-full max-w-sm aspect-square rounded-3xl bg-ink-800 border border-gold/20 overflow-hidden">
+    <div class="hero-in relative flex justify-center md:justify-end" style="transition-delay:.2s">
+      <div id="hero-parallax" class="relative w-full max-w-sm aspect-square rounded-3xl bg-ink-800 border border-gold/20 overflow-hidden">
         <div class="absolute top-0 left-0 right-0 checker-strip z-10"></div>
         <img src="promo.JPG" alt="Multiservicios RML — alquiler con opción a compra en Panamá" class="w-full h-full object-cover">
         <div class="absolute bottom-0 left-0 right-0 checker-strip z-10"></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     STATS — franja de contadores animados, estilo specs
+     ========================================================= -->
+<section class="reveal-stagger reveal bg-ink-800 border-y border-gold/10 py-8">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-3 gap-4 text-center">
+    <div>
+      <p class="stat-num font-display font-bold text-gold text-2xl sm:text-4xl"><span data-count-to="0" data-suffix="%">0%</span></p>
+      <p class="mt-1 text-white/50 text-[11px] sm:text-sm font-body normal-case tracking-wide">Buró de crédito requerido</p>
+    </div>
+    <div>
+      <p class="stat-num font-display font-bold text-gold text-2xl sm:text-4xl"><span data-count-to="100" data-suffix="%">0%</span></p>
+      <p class="mt-1 text-white/50 text-[11px] sm:text-sm font-body normal-case tracking-wide">Mantenimiento incluido</p>
+    </div>
+    <div>
+      <p class="stat-num font-display font-bold text-gold text-2xl sm:text-4xl"><span data-count-to="200" data-prefix="$">0</span></p>
+      <p class="mt-1 text-white/50 text-[11px] sm:text-sm font-body normal-case tracking-wide">Abono inicial desde</p>
     </div>
   </div>
 </section>
@@ -213,18 +407,18 @@
      ========================================================= -->
 <section id="catalogo" class="bg-ink-800 py-14 md:py-20">
   <div class="max-w-6xl mx-auto px-4 sm:px-6">
-    <div class="max-w-2xl">
+    <div class="reveal max-w-2xl">
       <span class="text-gold font-bold text-sm uppercase tracking-widest">Catálogo disponible</span>
       <h2 class="mt-2 font-display font-bold text-2xl sm:text-3xl md:text-4xl text-white">Elige el auto que se ajusta a tu ritmo</h2>
       <p class="mt-3 text-white/60 text-base font-body normal-case">Vehículos económicos, confiables y listos para uso particular o para trabajar en plataformas.</p>
     </div>
 
-    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="reveal-stagger reveal mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
       <!-- Card 1: Hyundai Grand i10 -->
       <article class="car-card bg-ink rounded-2xl border border-white/10 overflow-hidden flex flex-col">
-        <div class="bg-ink-700 h-40 flex items-center justify-center p-3 border-b border-gold/20">
-          <img src="grand-i10.png" alt="Hyundai Grand i10" class="max-h-full max-w-full object-contain">
+        <div class="bg-ink-700 h-40 flex items-center justify-center p-3 border-b border-gold/20 overflow-hidden">
+          <img src="grand-i10.png" alt="Hyundai Grand i10" class="car-img max-h-full max-w-full object-contain">
         </div>
         <div class="p-5 flex flex-col flex-1">
           <div class="flex items-start justify-between gap-2">
@@ -241,7 +435,7 @@
             <li>• Aire acondicionado</li>
           </ul>
           <a href="unidades-grand-i10.html"
-             class="mt-5 inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-600 text-ink font-bold text-sm px-4 py-3 rounded-full transition-colors">
+             class="btn-shine mt-5 inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-600 text-ink font-bold text-sm px-4 py-3 rounded-full transition-colors">
             Ver unidades disponibles
           </a>
         </div>
@@ -249,8 +443,8 @@
 
       <!-- Card 2: Hyundai Accent Solaris -->
       <article class="car-card bg-ink rounded-2xl border border-white/10 overflow-hidden flex flex-col">
-        <div class="bg-ink-700 h-40 flex items-center justify-center p-3 border-b border-gold/20">
-          <img src="solaris.png" alt="Hyundai Accent Solaris" class="max-h-full max-w-full object-contain">
+        <div class="bg-ink-700 h-40 flex items-center justify-center p-3 border-b border-gold/20 overflow-hidden">
+          <img src="solaris.png" alt="Hyundai Accent Solaris" class="car-img max-h-full max-w-full object-contain">
         </div>
         <div class="p-5 flex flex-col flex-1">
           <div class="flex items-start justify-between gap-2">
@@ -267,7 +461,7 @@
             <li>• Aire acondicionado</li>
           </ul>
           <a href="unidades-accent-solaris.html"
-             class="mt-5 inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-600 text-ink font-bold text-sm px-4 py-3 rounded-full transition-colors">
+             class="btn-shine mt-5 inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-600 text-ink font-bold text-sm px-4 py-3 rounded-full transition-colors">
             Ver unidades disponibles
           </a>
         </div>
@@ -275,8 +469,8 @@
 
       <!-- Card 3: Kia Soluto -->
       <article class="car-card bg-ink rounded-2xl border border-white/10 overflow-hidden flex flex-col">
-        <div class="bg-ink-700 h-40 flex items-center justify-center p-3 border-b border-gold/20">
-          <img src="soluto_1.png" alt="Kia Soluto" class="max-h-full max-w-full object-contain">
+        <div class="bg-ink-700 h-40 flex items-center justify-center p-3 border-b border-gold/20 overflow-hidden">
+          <img src="soluto_1.png" alt="Kia Soluto" class="car-img max-h-full max-w-full object-contain">
         </div>
         <div class="p-5 flex flex-col flex-1">
           <div class="flex items-start justify-between gap-2">
@@ -293,7 +487,7 @@
             <li>• Aire acondicionado</li>
           </ul>
           <a href="unidades-soluto.html"
-             class="mt-5 inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-600 text-ink font-bold text-sm px-4 py-3 rounded-full transition-colors">
+             class="btn-shine mt-5 inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-600 text-ink font-bold text-sm px-4 py-3 rounded-full transition-colors">
             Ver unidades disponibles
           </a>
         </div>
@@ -307,7 +501,7 @@
      C) LA VENTAJA COMPETITIVA — signature: línea de meta / cobertura
      ========================================================= -->
 <section id="ventaja" class="bg-ink py-14 md:py-20">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+  <div class="reveal max-w-4xl mx-auto px-4 sm:px-6 text-center">
     <span class="text-gold font-bold text-sm uppercase tracking-widest">La ventaja Multiservicios RML</span>
     <h2 class="mt-2 font-display font-bold text-2xl sm:text-3xl md:text-4xl text-white">
       Mantenimiento y mano de obra incluidos en <span class="text-gold">TODO</span> el contrato
@@ -364,20 +558,22 @@
     </div>
 
     <div class="mt-12 grid md:grid-cols-3 gap-8 md:gap-6 relative">
-      <div class="hidden md:block absolute top-8 left-[16.6%] right-[16.6%] h-0.5 bg-white/10"></div>
+      <div id="step-track" class="hidden md:block absolute top-8 left-[16.6%] right-[16.6%] h-0.5 bg-white/10 overflow-hidden">
+        <div id="step-fill-1" class="step-line-fill"></div>
+      </div>
 
-      <div class="relative text-center">
-        <div class="mx-auto w-16 h-16 rounded-full bg-ink border-2 border-gold text-gold font-display font-bold text-xl flex items-center justify-center relative z-10">1</div>
+      <div class="reveal relative text-center" data-step data-fill-target="step-fill-1">
+        <div class="step-circle mx-auto w-16 h-16 rounded-full bg-ink border-2 border-gold text-gold font-display font-bold text-xl flex items-center justify-center relative z-10">1</div>
         <h3 class="mt-4 font-display font-semibold text-lg text-white">Contacto</h3>
         <p class="mt-2 text-white/60 text-sm font-body normal-case">Escríbenos por WhatsApp y cuéntanos qué auto necesitas y para qué lo vas a usar.</p>
       </div>
-      <div class="relative text-center">
-        <div class="mx-auto w-16 h-16 rounded-full bg-ink border-2 border-gold text-gold font-display font-bold text-xl flex items-center justify-center relative z-10">2</div>
+      <div class="reveal relative text-center" data-step style="transition-delay:.12s">
+        <div class="step-circle mx-auto w-16 h-16 rounded-full bg-ink border-2 border-gold text-gold font-display font-bold text-xl flex items-center justify-center relative z-10">2</div>
         <h3 class="mt-4 font-display font-semibold text-lg text-white">Aprobación</h3>
         <p class="mt-2 text-white/60 text-sm font-body normal-case">Evaluación exprés sin banco ni buró de crédito. Te confirmamos rápido.</p>
       </div>
-      <div class="relative text-center">
-        <div class="mx-auto w-16 h-16 rounded-full bg-wa text-ink font-display font-bold text-xl flex items-center justify-center relative z-10">3</div>
+      <div class="reveal relative text-center" data-step style="transition-delay:.24s">
+        <div class="step-circle mx-auto w-16 h-16 rounded-full bg-wa text-ink font-display font-bold text-xl flex items-center justify-center relative z-10">3</div>
         <h3 class="mt-4 font-display font-semibold text-lg text-white">Entrega</h3>
         <p class="mt-2 text-white/60 text-sm font-body normal-case">Firmamos el contrato, recibes las llaves y empiezas a manejar el mismo día.</p>
       </div>
@@ -385,7 +581,7 @@
 
     <div class="mt-10 text-center">
       <a href="#" data-wa-msg="Hola, quiero iniciar el proceso para alquilar un auto con opción a compra."
-         class="inline-flex items-center justify-center gap-2 bg-wa hover:bg-wa-600 text-ink font-bold text-base px-6 py-3.5 rounded-full transition-colors">
+         class="btn-shine inline-flex items-center justify-center gap-2 bg-wa hover:bg-wa-600 text-ink font-bold text-base px-6 py-3.5 rounded-full transition-colors">
         Empezar por WhatsApp
       </a>
     </div>
@@ -402,7 +598,7 @@
       <h2 class="mt-2 font-display font-bold text-2xl sm:text-3xl md:text-4xl text-white">Preguntas frecuentes</h2>
     </div>
 
-    <div class="mt-10 space-y-3">
+    <div class="reveal-stagger reveal mt-10 space-y-3">
 
       <details class="group bg-ink-800 rounded-xl border border-white/10 p-5">
         <summary class="flex items-center justify-between cursor-pointer font-display font-semibold text-white normal-case tracking-normal">
@@ -462,7 +658,7 @@
       </p>
     </div>
 
-    <div class="mt-10 grid sm:grid-cols-3 gap-5">
+    <div class="reveal-stagger reveal mt-10 grid sm:grid-cols-3 gap-5">
       <div class="aspect-[4/5] rounded-2xl bg-ink border border-gold/20 flex items-end p-4">
         <span class="text-white/40 text-xs font-medium font-body">📸 Foto de entrega — cliente 1</span>
       </div>
@@ -474,7 +670,7 @@
       </div>
     </div>
 
-    <div class="mt-10 grid md:grid-cols-3 gap-6">
+    <div class="reveal-stagger reveal mt-10 grid md:grid-cols-3 gap-6">
       <blockquote class="bg-ink rounded-2xl p-6 border border-white/10">
         <p class="text-white/80 text-sm leading-relaxed font-body">"En menos de una semana ya estaba trabajando con mi propio auto en la plataforma. El proceso fue directo, sin vueltas."</p>
         <footer class="mt-4 text-sm font-bold text-gold font-body">— Ricardo A., San Miguelito</footer>
@@ -502,7 +698,7 @@
       <p class="mt-3 text-white/60 text-sm font-body normal-case">Río Abajo, Calle 18, entrando por la Texaco.</p>
     </div>
 
-    <div class="mt-8 rounded-2xl overflow-hidden border border-gold/20">
+    <div class="reveal mt-8 rounded-2xl overflow-hidden border border-gold/20">
       <iframe
         title="Ubicación de Multiservicios RML en Panamá"
         src="https://www.google.com/maps?q=9.0235025,-79.4896054&z=16&output=embed"
@@ -513,7 +709,7 @@
 
     <div class="mt-6 text-center">
       <a href="https://www.google.com/maps/dir/?api=1&destination=9.0235025,-79.4896054" target="_blank" rel="noopener"
-         class="inline-flex items-center justify-center gap-2 border border-gold/40 hover:bg-gold/10 text-gold font-bold text-sm px-5 py-3 rounded-full transition-colors">
+         class="btn-shine inline-flex items-center justify-center gap-2 border border-gold/40 hover:bg-gold/10 text-gold font-bold text-sm px-5 py-3 rounded-full transition-colors">
         Cómo llegar en Google Maps
       </a>
     </div>
