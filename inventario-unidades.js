@@ -47,7 +47,7 @@ window.INVENTARIO_UNIDADES = [
   },
   {
     "modelo": "Hyundai Accent Solaris",
-    "unidad": "ACS-01",
+    "unidad": "LM040",
     "anio": 2022,
     "foto": "",
     "km": 41300,
