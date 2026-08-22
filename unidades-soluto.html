@@ -37,14 +37,73 @@
   a:focus-visible, button:focus-visible { outline: 3px solid #F2B705; outline-offset: 2px; }
 </style>
 </head>
-<body class="bg-ink text-white antialiased">
+<body class="bg-ink text-white antialiased" data-modelo="Kia Soluto">
 
+<script src="inventario-unidades.js"></script>
 <script>
-  const WA_NUMBER = "50768290144"; // Multiservicios RML - WhatsApp real
-  function waLink(message) { return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`; }
+  const WA_NUMBER = "50768290144";
+  const MODELO_PAGINA = document.body.dataset.modelo;
+
+  const waLink = (message) => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
+  const formatKm = (km) => new Intl.NumberFormat('es-PA').format(Number(km || 0));
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, char => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#039;', '"':'&quot;'
+  }[char]));
+
+  function mensajeUnidad(u) {
+    return `Hola, quiero consultar la unidad ${u.unidad} del ${u.modelo} (${u.anio}, ${formatKm(u.km)} km, ${u.transmision}, color ${u.color}, uso ${u.uso}) en alquiler con opción a compra.`;
+  }
+
+  function imagenUnidad(u) {
+    if (u.foto) {
+      return `<img src="${escapeHtml(u.foto)}" alt="${escapeHtml(u.modelo)} ${escapeHtml(u.unidad)}" class="w-full h-full object-cover">`;
+    }
+    return `<svg viewBox="0 0 200 100" class="w-full h-full" aria-hidden="true">
+      <path d="M20 68 Q28 42 55 40 L140 40 Q165 42 178 68 Z" fill="#F2B705"/>
+      <path d="M62 43 Q70 26 86 25 L112 25 Q126 26 131 42 Z" fill="#0A0A0A"/>
+      <rect x="20" y="62" width="158" height="12" rx="6" fill="#1C1C1C"/>
+      <circle cx="55" cy="76" r="13" fill="#0A0A0A" stroke="#F2B705" stroke-width="1.5"/><circle cx="55" cy="76" r="5" fill="#F2B705"/>
+      <circle cx="143" cy="76" r="13" fill="#0A0A0A" stroke="#F2B705" stroke-width="1.5"/><circle cx="143" cy="76" r="5" fill="#F2B705"/>
+    </svg>`;
+  }
+
+  function tarjetaUnidad(u) {
+    const msg = mensajeUnidad(u);
+    return `<article class="unit-card bg-ink-800 rounded-2xl border border-white/10 overflow-hidden flex flex-col">
+      <div class="bg-ink-700 h-48 flex items-center justify-center border-b border-gold/20 relative overflow-hidden">
+        <span class="absolute z-10 top-3 left-3 bg-wa text-ink text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full">Disponible</span>
+        <span class="absolute z-10 top-3 right-3 bg-black/70 text-white/80 text-[10px] font-bold px-2 py-1 rounded-full">${escapeHtml(u.unidad)}</span>
+        ${imagenUnidad(u)}
+      </div>
+      <div class="p-5 flex flex-col flex-1">
+        <h3 class="font-display font-semibold text-lg text-white">${escapeHtml(u.modelo)} ${escapeHtml(u.anio)}</h3>
+        <dl class="mt-3 grid grid-cols-2 gap-y-1.5 text-sm font-body normal-case text-white/70">
+          <dt class="text-white/40">Unidad</dt><dd class="text-right font-semibold text-white">${escapeHtml(u.unidad)}</dd>
+          <dt class="text-white/40">Año</dt><dd class="text-right font-semibold text-white">${escapeHtml(u.anio)}</dd>
+          <dt class="text-white/40">Kilometraje</dt><dd class="text-right font-semibold text-white">${formatKm(u.km)} km</dd>
+          <dt class="text-white/40">Transmisión</dt><dd class="text-right font-semibold text-white">${escapeHtml(u.transmision)}</dd>
+          <dt class="text-white/40">Color</dt><dd class="text-right font-semibold text-white">${escapeHtml(u.color)}</dd>
+          <dt class="text-white/40">Uso ideal</dt><dd class="text-right font-semibold text-white">${escapeHtml(u.uso)}</dd>
+        </dl>
+        <a href="${waLink(msg)}" target="_blank" rel="noopener" class="mt-5 inline-flex items-center justify-center gap-2 bg-wa hover:bg-wa-600 text-ink font-bold text-sm px-4 py-3 rounded-full transition-colors">Consultar esta unidad</a>
+      </div>
+    </article>`;
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
+    // WhatsApp generales de la página
     document.querySelectorAll("[data-wa-msg]").forEach(el => el.href = waLink(el.getAttribute("data-wa-msg")));
 
+    // Render automático desde el inventario central
+    const contenedor = document.getElementById("unidades-grid");
+    if (contenedor) {
+      const unidades = (window.INVENTARIO_UNIDADES || []).filter(u => u.modelo === MODELO_PAGINA && u.disponible !== false);
+      contenedor.innerHTML = unidades.length
+        ? unidades.map(tarjetaUnidad).join('')
+        : `<div class="sm:col-span-2 lg:col-span-3 rounded-2xl border border-white/10 bg-ink-800 p-8 text-center text-white/60">No hay unidades disponibles de este modelo en este momento.</div>`;
+    }
+
+    // Menú disponibles
     document.querySelectorAll("[data-dropdown-toggle]").forEach(btn => {
       const menu = document.getElementById(btn.getAttribute("data-dropdown-toggle"));
       const chevron = btn.querySelector("[data-dropdown-chevron]");
@@ -126,91 +185,8 @@
     </div>
   </div>
 
-  <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    
-    <article class="unit-card bg-ink-800 rounded-2xl border border-white/10 overflow-hidden flex flex-col">
-      <div class="bg-ink-700 h-36 flex items-center justify-center p-6 border-b border-gold/20 relative">
-        <span class="absolute top-3 left-3 bg-wa text-ink text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full">Disponible</span>
-        <span class="absolute top-3 right-3 bg-black/60 text-white/70 text-[10px] font-bold px-2 py-1 rounded-full">SOL-01</span>
-        <svg viewBox="0 0 200 100" class="w-full h-full" aria-hidden="true">
-            <path d="M20 68 Q28 42 55 40 L140 40 Q165 42 178 68 Z" fill="#F2B705"/>
-            <path d="M62 43 Q70 26 86 25 L112 25 Q126 26 131 42 Z" fill="#0A0A0A"/>
-            <rect x="20" y="62" width="158" height="12" rx="6" fill="#1C1C1C"/>
-            <circle cx="55" cy="76" r="13" fill="#0A0A0A" stroke="#F2B705" stroke-width="1.5"/><circle cx="55" cy="76" r="5" fill="#F2B705"/>
-            <circle cx="143" cy="76" r="13" fill="#0A0A0A" stroke="#F2B705" stroke-width="1.5"/><circle cx="143" cy="76" r="5" fill="#F2B705"/>
-          </svg>
-      </div>
-      <div class="p-5 flex flex-col flex-1">
-        <h3 class="font-display font-semibold text-lg text-white">Kia Soluto 2023</h3>
-        <dl class="mt-3 grid grid-cols-2 gap-y-1.5 text-sm font-body normal-case text-white/70">
-          <dt class="text-white/40">Año</dt><dd class="text-right font-semibold text-white">2023</dd>
-          <dt class="text-white/40">Kilometraje</dt><dd class="text-right font-semibold text-white">9,400 km</dd>
-          <dt class="text-white/40">Transmisión</dt><dd class="text-right font-semibold text-white">Automática</dd>
-          <dt class="text-white/40">Color</dt><dd class="text-right font-semibold text-white">Gris</dd>
-          <dt class="text-white/40">Uso ideal</dt><dd class="text-right font-semibold text-white">Particular</dd>
-        </dl>
-        <a href="#" data-wa-msg="Hola, quiero consultar la unidad SOL-01 del Kia Soluto (2023, 9,400 km) en alquiler con opción a compra."
-           class="mt-5 inline-flex items-center justify-center gap-2 bg-wa hover:bg-wa-600 text-ink font-bold text-sm px-4 py-3 rounded-full transition-colors">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.13-2.9-7C17.18 3.03 14.69 2 12.04 2Zm5.8 14.15c-.24.68-1.4 1.32-1.94 1.4-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.16-4.94-4.36-.14-.2-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.83 2 .9 2.15.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.3.38-.44.51-.15.14-.3.3-.13.58.17.28.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.29.15.46.13.63-.08.17-.2.72-.84.91-1.13.19-.28.38-.24.63-.14.26.1 1.65.78 1.93.92.29.14.48.21.55.33.07.12.07.68-.17 1.36Z"/></svg> Consultar esta unidad
-        </a>
-      </div>
-    </article>
-
-    <article class="unit-card bg-ink-800 rounded-2xl border border-white/10 overflow-hidden flex flex-col">
-      <div class="bg-ink-700 h-36 flex items-center justify-center p-6 border-b border-gold/20 relative">
-        <span class="absolute top-3 left-3 bg-wa text-ink text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full">Disponible</span>
-        <span class="absolute top-3 right-3 bg-black/60 text-white/70 text-[10px] font-bold px-2 py-1 rounded-full">SOL-02</span>
-        <svg viewBox="0 0 200 100" class="w-full h-full" aria-hidden="true">
-            <path d="M20 68 Q28 42 55 40 L140 40 Q165 42 178 68 Z" fill="#F2B705"/>
-            <path d="M62 43 Q70 26 86 25 L112 25 Q126 26 131 42 Z" fill="#0A0A0A"/>
-            <rect x="20" y="62" width="158" height="12" rx="6" fill="#1C1C1C"/>
-            <circle cx="55" cy="76" r="13" fill="#0A0A0A" stroke="#F2B705" stroke-width="1.5"/><circle cx="55" cy="76" r="5" fill="#F2B705"/>
-            <circle cx="143" cy="76" r="13" fill="#0A0A0A" stroke="#F2B705" stroke-width="1.5"/><circle cx="143" cy="76" r="5" fill="#F2B705"/>
-          </svg>
-      </div>
-      <div class="p-5 flex flex-col flex-1">
-        <h3 class="font-display font-semibold text-lg text-white">Kia Soluto 2023</h3>
-        <dl class="mt-3 grid grid-cols-2 gap-y-1.5 text-sm font-body normal-case text-white/70">
-          <dt class="text-white/40">Año</dt><dd class="text-right font-semibold text-white">2023</dd>
-          <dt class="text-white/40">Kilometraje</dt><dd class="text-right font-semibold text-white">22,100 km</dd>
-          <dt class="text-white/40">Transmisión</dt><dd class="text-right font-semibold text-white">Automática</dd>
-          <dt class="text-white/40">Color</dt><dd class="text-right font-semibold text-white">Negro</dd>
-          <dt class="text-white/40">Uso ideal</dt><dd class="text-right font-semibold text-white">Plataforma</dd>
-        </dl>
-        <a href="#" data-wa-msg="Hola, quiero consultar la unidad SOL-02 del Kia Soluto (2023, 22,100 km) en alquiler con opción a compra."
-           class="mt-5 inline-flex items-center justify-center gap-2 bg-wa hover:bg-wa-600 text-ink font-bold text-sm px-4 py-3 rounded-full transition-colors">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.13-2.9-7C17.18 3.03 14.69 2 12.04 2Zm5.8 14.15c-.24.68-1.4 1.32-1.94 1.4-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.16-4.94-4.36-.14-.2-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.83 2 .9 2.15.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.3.38-.44.51-.15.14-.3.3-.13.58.17.28.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.29.15.46.13.63-.08.17-.2.72-.84.91-1.13.19-.28.38-.24.63-.14.26.1 1.65.78 1.93.92.29.14.48.21.55.33.07.12.07.68-.17 1.36Z"/></svg> Consultar esta unidad
-        </a>
-      </div>
-    </article>
-
-    <article class="unit-card bg-ink-800 rounded-2xl border border-white/10 overflow-hidden flex flex-col">
-      <div class="bg-ink-700 h-36 flex items-center justify-center p-6 border-b border-gold/20 relative">
-        <span class="absolute top-3 left-3 bg-wa text-ink text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full">Disponible</span>
-        <span class="absolute top-3 right-3 bg-black/60 text-white/70 text-[10px] font-bold px-2 py-1 rounded-full">SOL-03</span>
-        <svg viewBox="0 0 200 100" class="w-full h-full" aria-hidden="true">
-            <path d="M20 68 Q28 42 55 40 L140 40 Q165 42 178 68 Z" fill="#F2B705"/>
-            <path d="M62 43 Q70 26 86 25 L112 25 Q126 26 131 42 Z" fill="#0A0A0A"/>
-            <rect x="20" y="62" width="158" height="12" rx="6" fill="#1C1C1C"/>
-            <circle cx="55" cy="76" r="13" fill="#0A0A0A" stroke="#F2B705" stroke-width="1.5"/><circle cx="55" cy="76" r="5" fill="#F2B705"/>
-            <circle cx="143" cy="76" r="13" fill="#0A0A0A" stroke="#F2B705" stroke-width="1.5"/><circle cx="143" cy="76" r="5" fill="#F2B705"/>
-          </svg>
-      </div>
-      <div class="p-5 flex flex-col flex-1">
-        <h3 class="font-display font-semibold text-lg text-white">Kia Soluto 2022</h3>
-        <dl class="mt-3 grid grid-cols-2 gap-y-1.5 text-sm font-body normal-case text-white/70">
-          <dt class="text-white/40">Año</dt><dd class="text-right font-semibold text-white">2022</dd>
-          <dt class="text-white/40">Kilometraje</dt><dd class="text-right font-semibold text-white">55,700 km</dd>
-          <dt class="text-white/40">Transmisión</dt><dd class="text-right font-semibold text-white">Manual</dd>
-          <dt class="text-white/40">Color</dt><dd class="text-right font-semibold text-white">Blanco</dd>
-          <dt class="text-white/40">Uso ideal</dt><dd class="text-right font-semibold text-white">Plataforma</dd>
-        </dl>
-        <a href="#" data-wa-msg="Hola, quiero consultar la unidad SOL-03 del Kia Soluto (2022, 55,700 km) en alquiler con opción a compra."
-           class="mt-5 inline-flex items-center justify-center gap-2 bg-wa hover:bg-wa-600 text-ink font-bold text-sm px-4 py-3 rounded-full transition-colors">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.13-2.9-7C17.18 3.03 14.69 2 12.04 2Zm5.8 14.15c-.24.68-1.4 1.32-1.94 1.4-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.16-4.94-4.36-.14-.2-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.83 2 .9 2.15.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.3.38-.44.51-.15.14-.3.3-.13.58.17.28.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.29.15.46.13.63-.08.17-.2.72-.84.91-1.13.19-.28.38-.24.63-.14.26.1 1.65.78 1.93.92.29.14.48.21.55.33.07.12.07.68-.17 1.36Z"/></svg> Consultar esta unidad
-        </a>
-      </div>
-    </article>
+  <div id="unidades-grid" class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Las tarjetas se generan automáticamente desde inventario-unidades.js -->
   </div>
 
   <div class="mt-12 bg-ink-800 border border-white/10 rounded-2xl p-6 sm:p-8 text-center">
