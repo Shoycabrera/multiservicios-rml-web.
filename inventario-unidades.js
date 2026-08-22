@@ -14,12 +14,12 @@
 window.INVENTARIO_UNIDADES = [
   {
     "modelo": "Kia Soluto",
-    "unidad": "SOL-01",
-    "anio": 2023,
+    "unidad": "R090",
+    "anio": 2025,
     "foto": "",
-    "km": 9400,
+    "km": 34000,
     "transmision": "Automática",
-    "color": "Gris",
+    "color": "Blanco",
     "uso": "Particular",
     "disponible": true
   },
