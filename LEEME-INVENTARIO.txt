@@ -1,0 +1,49 @@
+MULTISERVICIOS RML — CÓMO ACTUALIZAR EL INVENTARIO
+====================================================
+
+Archivo que editas normalmente:
+  inventario-unidades.js
+
+AGREGAR UNA UNIDAD
+------------------
+Copia uno de los bloques existentes, pégalo dentro de window.INVENTARIO_UNIDADES
+y cambia solamente estos campos:
+
+  modelo         Nombre exacto del modelo.
+  unidad         Código interno, por ejemplo R090.
+  anio           Año del vehículo.
+  foto           Ruta de la foto. Déjalo "" si todavía no tienes foto.
+  km             Kilometraje como número, sin comas.
+  transmision    Ej.: "Automática" o "Manual".
+  color           Color del vehículo.
+  uso             Ej.: "Particular", "Plataforma" o "Taxi".
+  estado          "disponible", "reservado", "proximamente", "no-disponible" u "oculto".
+
+ESTADOS
+-------
+  disponible       Se publica y puede consultarse por WhatsApp.
+  reservado        Se publica como reservada y WhatsApp pregunta por alternativa/estado.
+  proximamente     Se publica como próxima a llegar.
+  no-disponible    Se mantiene visible, pero desactiva la consulta de esa unidad.
+  oculto            No aparece en la web, pero no tienes que borrar el bloque.
+
+FOTOS
+-----
+Cuando tengas una foto real, colócala en la carpeta del sitio (idealmente dentro
+de una carpeta "fotos") y escribe la ruta, por ejemplo:
+
+  "foto": "fotos/R090.webp"
+
+Si "foto" queda vacía, la tarjeta usa automáticamente la imagen genérica del
+modelo y marca que la foto real está pendiente.
+
+QUÉ SE ACTUALIZA AUTOMÁTICAMENTE
+--------------------------------
+- Tarjeta de la unidad.
+- Año, kilometraje, transmisión, color y uso.
+- Estado visual.
+- Botón y mensaje de WhatsApp.
+- Cantidad de unidades disponibles en la portada.
+- Panel de inventario del hero.
+
+No hace falta editar las páginas HTML para agregar o retirar una unidad.

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es-PA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiservicios RML | Alquiler con opción a compra en Panamá</title>
+  <meta name="description" content="Alquiler con opción a compra de vehículos en Panamá. Sin banco ni fiador, con mantenimiento y mano de obra incluidos. Consulta disponibilidad por WhatsApp.">
+  <meta name="theme-color" content="#070809">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="rml.css">
+  <script src="inventario-unidades.js" defer></script>
+  <script src="rml.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#top" aria-label="Multiservicios RML - Inicio">
+        <img src="wordmark-multiservicios-rml.png" alt="Multiservicios RML">
+      </a>
+      <nav class="desktop-nav" aria-label="Navegación principal">
+        <a href="#catalogo">Vehículos</a>
+        <a href="#ventaja">Cobertura</a>
+        <a href="#proceso">Cómo funciona</a>
+        <a href="#faq">FAQ</a>
+        <a href="#ubicacion">Ubicación</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-outline" href="#catalogo">Ver disponibles</a>
+        <a class="btn btn-wa" href="#" data-wa-msg="Hola, quiero cotizar un auto con opción a compra en Panamá.">WhatsApp <span class="arrow">↗</span></a>
+        <button class="mobile-menu-btn" type="button" data-mobile-menu aria-expanded="false" aria-label="Abrir menú">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-drawer" data-mobile-drawer aria-label="Navegación móvil">
+    <a href="#catalogo">Vehículos <span>↘</span></a>
+    <a href="#ventaja">Cobertura <span>↘</span></a>
+    <a href="#proceso">Cómo funciona <span>↘</span></a>
+    <a href="#faq">Preguntas frecuentes <span>↘</span></a>
+    <a href="#ubicacion">Ubicación <span>↘</span></a>
+  </nav>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="shell hero-inner">
+        <div>
+          <div class="checker-mark" aria-hidden="true"></div>
+          <span class="eyebrow" style="margin-top:24px">Alquiler con opción a compra · Panamá</span>
+          <h1 class="display">Maneja hoy.<br><span class="thin">Construye tu compra.</span></h1>
+          <p class="hero-copy">Accede a un vehículo sin trámites bancarios tradicionales. Abono inicial desde <strong style="color:#e7eaec">$200</strong>, evaluación directa y mantenimiento incluido durante el contrato.</p>
+          <div class="hero-actions">
+            <a class="btn btn-wa" href="#" data-wa-msg="Hola, quiero cotizar un auto con opción a compra en Panamá. Quiero conocer disponibilidad y condiciones.">Cotizar por WhatsApp <span class="arrow">↗</span></a>
+            <a class="btn btn-outline" href="#catalogo">Explorar vehículos <span class="arrow">→</span></a>
+          </div>
+          <div class="hero-proof" aria-label="Beneficios principales">
+            <div class="proof-item"><i></i>Sin banco ni fiador</div>
+            <div class="proof-item"><i></i>Mantenimiento incluido</div>
+            <div class="proof-item"><i></i>Uso particular o plataforma</div>
+          </div>
+        </div>
+
+        <aside class="inventory-console" aria-label="Disponibilidad del inventario">
+          <div class="console-top"><span>RML / Inventario</span><div class="console-dots"><span></span><span></span><span></span></div></div>
+          <div class="console-main">
+            <div class="console-total">
+              <div><strong class="mono" data-total-available>0</strong><small>Unidades disponibles ahora</small></div>
+              <span class="live-pill">Actualizado</span>
+            </div>
+            <div class="console-list">
+              <div class="console-row">
+                <a href="unidades-grand-i10.html">Hyundai Grand i10</a>
+                <span class="status">Disponibles</span>
+                <span class="count mono" data-model-count="Hyundai Grand i10">0</span>
+              </div>
+              <div class="console-row">
+                <a href="unidades-accent-solaris.html">Hyundai Accent Solaris</a>
+                <span class="status">Disponibles</span>
+                <span class="count mono" data-model-count="Hyundai Accent Solaris">0</span>
+              </div>
+              <div class="console-row">
+                <a href="unidades-soluto.html">Kia Soluto</a>
+                <span class="status">Disponibles</span>
+                <span class="count mono" data-model-count="Kia Soluto">0</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="data-strip">
+      <div class="shell data-grid">
+        <div class="data-item"><strong>Desde $200</strong><span>Abono inicial</span></div>
+        <div class="data-item"><strong>Sin banco</strong><span>Evaluación directa</span></div>
+        <div class="data-item"><strong>Incluido</strong><span>Mantenimiento</span></div>
+        <div class="data-item"><strong>Panamá</strong><span>Atención local</span></div>
+      </div>
+    </div>
+
+    <section class="section section-dark" id="catalogo">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Inventario</span>
+            <h2 class="display section-title">Elige una base.<br><span class="muted">Luego elige tu unidad.</span></h2>
+          </div>
+          <p class="section-copy">Consulta los modelos disponibles y elige la unidad que mejor se ajuste al uso que necesitas.</p>
+        </div>
+
+        <div class="model-grid">
+          <a class="model-card reveal" href="unidades-grand-i10.html">
+            <div class="model-visual"><span class="model-index mono">01 / CITY</span><img src="grand-i10.png" alt="Hyundai Grand i10"></div>
+            <div class="model-body">
+              <div class="model-top"><h3 class="model-name">Hyundai Grand i10</h3><span class="model-count" data-model-count-label="Hyundai Grand i10">0 disponibles</span></div>
+              <p class="model-desc">Compacto, económico y ágil para ciudad, uso particular o trabajo diario en plataforma.</p>
+              <div class="model-meta"><span class="meta-chip">Ciudad</span><span class="meta-chip">Plataforma</span><span class="meta-chip">Particular</span></div>
+              <div class="model-link">Ver inventario <span class="arrow">→</span></div>
+            </div>
+          </a>
+
+          <a class="model-card reveal" href="unidades-accent-solaris.html">
+            <div class="model-visual"><span class="model-index mono">02 / SEDAN</span><img src="solaris.png" alt="Hyundai Accent Solaris"></div>
+            <div class="model-body">
+              <div class="model-top"><h3 class="model-name">Hyundai Accent Solaris</h3><span class="model-count" data-model-count-label="Hyundai Accent Solaris">0 disponibles</span></div>
+              <p class="model-desc">Sedán espacioso pensado para pasajeros, plataforma y recorridos diarios con buen espacio interior.</p>
+              <div class="model-meta"><span class="meta-chip">Sedán</span><span class="meta-chip">Plataforma</span><span class="meta-chip">Taxi</span></div>
+              <div class="model-link">Ver inventario <span class="arrow">→</span></div>
+            </div>
+          </a>
+
+          <a class="model-card reveal" href="unidades-soluto.html">
+            <div class="model-visual"><span class="model-index mono">03 / SEDAN</span><img src="soluto_1.png" alt="Kia Soluto"></div>
+            <div class="model-body">
+              <div class="model-top"><h3 class="model-name">Kia Soluto</h3><span class="model-count" data-model-count-label="Kia Soluto">0 disponibles</span></div>
+              <p class="model-desc">Buen espacio de baúl y rendimiento de combustible para uso particular o plataforma.</p>
+              <div class="model-meta"><span class="meta-chip">Sedán</span><span class="meta-chip">Particular</span><span class="meta-chip">Plataforma</span></div>
+              <div class="model-link">Ver inventario <span class="arrow">→</span></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="promo">
+      <div class="shell promo-layout">
+        <div class="promo-copy reveal">
+          <div>
+            <span class="promo-kicker"><span class="checker-mark" style="width:32px;height:6px"></span>Promoción activa</span>
+            <h2 class="display">Empieza con<br><span class="gold">tanque lleno.</span></h2>
+            <p>Empieza tu camino con un beneficio adicional. Consulta por WhatsApp las condiciones vigentes de la promoción de tanque lleno.</p>
+          </div>
+          <div>
+            <a class="btn btn-outline" href="#" data-wa-msg="Hola, vi la promoción de tanque lleno y quiero conocer las condiciones y vehículos disponibles.">Consultar promoción <span class="arrow">↗</span></a>
+          </div>
+        </div>
+        <div class="promo-art reveal"><img src="promo.png" alt="Promoción vigente de Multiservicios RML" loading="lazy"></div>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="ventaja">
+      <div class="shell advantage-grid">
+        <div class="reveal">
+          <span class="eyebrow">Cobertura RML</span>
+          <h2 class="display section-title">Tu auto debe<br><span class="muted">seguir produciendo.</span></h2>
+          <p class="section-copy">La cobertura de mantenimiento y mano de obra está integrada al contrato para reducir fricción y evitar que un imprevisto mecánico detenga tu operación.</p>
+          <div class="feature-list" style="margin-top:34px">
+            <div class="feature-row"><span class="feature-no mono">01</span><div><h3>Mantenimiento dentro del contrato</h3><p>Cambios de aceite, revisiones y mano de obra continúan cubiertos según la etapa del contrato.</p></div></div>
+            <div class="feature-row"><span class="feature-no mono">02</span><div><h3>Repuestos por desgaste en primera etapa</h3><p>Pastillas, bandas, filtros y otras piezas de desgaste se contemplan durante la primera mitad.</p></div></div>
+            <div class="feature-row"><span class="feature-no mono">03</span><div><h3>Un solo punto de atención</h3><p>Menos coordinación con talleres externos y una relación directa con Multiservicios RML.</p></div></div>
+          </div>
+        </div>
+        <div class="coverage-card reveal">
+          <div class="coverage-label"><span>Inicio de contrato</span><span>Final</span></div>
+          <div class="coverage-bar" aria-hidden="true"></div>
+          <div class="coverage-sections">
+            <div class="coverage-segment"><strong>Primera mitad</strong><span>Repuestos por desgaste, mantenimiento y mano de obra.</span></div>
+            <div class="coverage-segment"><strong>Segunda mitad</strong><span>Mantenimiento y mano de obra hasta completar el contrato.</span></div>
+          </div>
+          <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;gap:18px">
+            <span style="color:#697178;font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:700">Cobertura</span>
+            <span style="font-size:11px;color:#c6ccd0;text-align:right">Sin talleres externos con sobrecostos.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="proceso">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><span class="eyebrow">Proceso</span><h2 class="display section-title">Tres pasos.<br><span class="muted">Sin vueltas.</span></h2></div>
+          <p class="section-copy">Escríbenos, revisamos tu caso y te orientamos hacia una unidad disponible que se ajuste a lo que necesitas.</p>
+        </div>
+        <div class="process-grid reveal">
+          <div class="process-step"><span class="process-num mono">01 / CONTACTO</span><h3>Cuéntanos qué necesitas</h3><p>Escríbenos por WhatsApp, indícanos el uso que le darás al vehículo y revisamos opciones disponibles.</p></div>
+          <div class="process-step"><span class="process-num mono">02 / EVALUACIÓN</span><h3>Revisión directa</h3><p>Evaluamos tu caso sin depender de banco, buró de crédito o fiador y confirmamos las condiciones aplicables.</p></div>
+          <div class="process-step"><span class="process-num mono">03 / ENTREGA</span><h3>Contrato y llaves</h3><p>Al completar el proceso y firmar el contrato, recibes la unidad y comienzas a manejar.</p></div>
+        </div>
+        <div class="process-cta reveal"><p>Abono inicial <strong style="color:#d7dce0">desde $200</strong>. Consulta por WhatsApp la disponibilidad y las condiciones aplicables.</p><a class="btn btn-wa" href="#" data-wa-msg="Hola, quiero iniciar el proceso para alquilar un auto con opción a compra. Quiero conocer los requisitos y unidades disponibles.">Iniciar consulta <span class="arrow">↗</span></a></div>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="faq">
+      <div class="shell faq-layout">
+        <div class="reveal"><span class="eyebrow">Información</span><h2 class="display section-title">Preguntas<br><span class="muted">frecuentes.</span></h2><p class="section-copy">Resuelve las dudas principales sobre requisitos, uso del vehículo, seguro y opción a compra.</p></div>
+        <div class="faq-list reveal">
+          <details class="faq-item"><summary>¿Qué requisitos necesito para aplicar?<span class="faq-icon">+</span></summary><p>Saber manejar transmisión manual o automática, récord policivo, historial de tránsito, paz y salvo de tránsito sin boletas de alcoholemia, recibo de servicio público y licencia E1. Ser mayor de 30 años es el requisito general, aunque es negociable según el caso. No pedimos banco, buró de crédito ni fiador.</p></details>
+          <details class="faq-item"><summary>¿Puedo usar el auto para Uber, inDrive o DiDi?<span class="faq-icon">+</span></summary><p>Sí. La mayoría de los vehículos están pensados para trabajar en plataformas de transporte. Al consultar se confirma cuál unidad se ajusta mejor al uso.</p></details>
+          <details class="faq-item"><summary>¿Qué pasa si tengo un accidente?<span class="faq-icon">+</span></summary><p>Los vehículos cuentan con póliza de seguro. Ante un accidente debes comunicarte de inmediato con Multiservicios RML para recibir orientación sobre el proceso con la aseguradora.</p></details>
+          <details class="faq-item"><summary>¿Necesito banco o fiador para aplicar?<span class="faq-icon">+</span></summary><p>No. La evaluación es propia y directa, sin depender de un banco ni de un fiador.</p></details>
+          <details class="faq-item"><summary>Al terminar el contrato, ¿el auto es mío?<span class="faq-icon">+</span></summary><p>El esquema es de alquiler con opción a compra: cada pago forma parte del proceso acordado para llegar a la propiedad del vehículo al finalizar el plazo establecido en el contrato.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="testimonios">
+      <div class="shell">
+        <div class="section-head reveal"><div><span class="eyebrow">Experiencia</span><h2 class="display section-title">Una relación<br><span class="muted">de largo plazo.</span></h2></div><p class="section-copy">Atención directa durante el proceso y acompañamiento a lo largo del contrato.</p></div>
+        <div class="quote-grid">
+          <blockquote class="quote reveal"><span class="quote-mark">“</span><p>En menos de una semana ya estaba trabajando con mi propio auto en la plataforma. El proceso fue directo, sin vueltas.</p><footer>Ricardo A. · San Miguelito</footer></blockquote>
+          <blockquote class="quote reveal"><span class="quote-mark">“</span><p>Me tranquiliza saber que el mantenimiento está cubierto. Ya llevo varios meses y no he pagado ni un repuesto extra.</p><footer>Yariela M. · Panamá Este</footer></blockquote>
+          <blockquote class="quote reveal"><span class="quote-mark">“</span><p>No tenía cómo calificar en un banco y aquí no lo pidieron. Hoy sigo pagando mi Kia Soluto, sabiendo que va a ser mío.</p><footer>Johan P. · Chorrera</footer></blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="ubicacion">
+      <div class="shell">
+        <div class="location-card reveal">
+          <div class="location-copy">
+            <div><span class="eyebrow">Visítanos</span><h3 class="display">Río Abajo,<br>Panamá.</h3><p>Calle 18, entrando por la Texaco. Puedes iniciar la consulta por WhatsApp y coordinar tu visita.</p></div>
+            <div class="location-meta">
+              <div class="location-line"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s7-5.2 7-12a7 7 0 10-14 0c0 6.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg><span>Río Abajo, Calle 18, entrando por la Texaco</span></div>
+              <div class="location-line"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h4l2 5-3 2a16 16 0 006 6l2-3 5 2v4a2 2 0 01-2 2C9 22 2 15 2 6a2 2 0 012-2z"/></svg><span>6829-0144</span></div>
+              <a class="btn btn-outline" href="https://www.google.com/maps/dir/?api=1&destination=9.0235025,-79.4896054" target="_blank" rel="noopener">Abrir Google Maps <span class="arrow">↗</span></a>
+            </div>
+          </div>
+          <div class="location-map"><iframe title="Ubicación de Multiservicios RML" src="https://www.google.com/maps?q=9.0235025,-79.4896054&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="shell final-inner"><h2 class="display">¿Hay una unidad que encaja contigo?</h2><a class="btn btn-wa" href="#" data-wa-msg="Hola, quiero cotizar una unidad disponible y conocer las condiciones del alquiler con opción a compra.">Hablar por WhatsApp <span class="arrow">↗</span></a></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell">
+      <div class="footer-grid">
+        <div class="footer-brand"><img src="wordmark-multiservicios-rml.png" alt="Multiservicios RML"><p>Alquiler con opción a compra de vehículos en Panamá. Atención directa y mantenimiento incluido según las condiciones del contrato.</p></div>
+        <div><h4>Explora</h4><div class="footer-links"><a href="#catalogo">Vehículos</a><a href="#ventaja">Cobertura</a><a href="#proceso">Cómo funciona</a><a href="#faq">Preguntas frecuentes</a></div></div>
+        <div><h4>Contacto</h4><div class="footer-links"><span>6829-0144</span><span>Río Abajo, Calle 18</span><span>Lun–Vie · 7:00am–4:00pm</span><span>Sáb · 7:00am–1:00pm</span></div></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 Multiservicios RML. Todos los derechos reservados.</span><span>Panamá · Alquiler con opción a compra</span></div>
+    </div>
+  </footer>
+
+  <div class="mobile-dock" aria-label="Acciones rápidas">
+    <a class="dock-catalog" href="#catalogo">Ver disponibles</a>
+    <a class="dock-wa" href="#" data-wa-msg="Hola, quiero cotizar un auto con opción a compra en Panamá.">WhatsApp ↗</a>
+  </div>
+</body>
+</html>
