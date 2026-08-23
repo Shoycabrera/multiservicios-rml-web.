@@ -1,0 +1,8 @@
+# Originales de cámara: mantener fuera del repositorio
+originales/
+RML-FOTOS/
+
+
+# Sistema
+.DS_Store
+Thumbs.db

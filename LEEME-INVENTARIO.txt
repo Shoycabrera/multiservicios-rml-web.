@@ -1,49 +1,61 @@
-MULTISERVICIOS RML — CÓMO ACTUALIZAR EL INVENTARIO
-====================================================
+MULTISERVICIOS RML — INVENTARIO Y FOTOS
+======================================
 
-Archivo que editas normalmente:
-  inventario-unidades.js
+1) INVENTARIO
+--------------
+Edita únicamente inventario-unidades.js para datos y estado de cada unidad.
 
-AGREGAR UNA UNIDAD
-------------------
-Copia uno de los bloques existentes, pégalo dentro de window.INVENTARIO_UNIDADES
-y cambia solamente estos campos:
+Estados:
+  disponible
+  reservado
+  proximamente
+  oculto
+  no-disponible (opcional)
 
-  modelo         Nombre exacto del modelo.
-  unidad         Código interno, por ejemplo R090.
-  anio           Año del vehículo.
-  foto           Ruta de la foto. Déjalo "" si todavía no tienes foto.
-  km             Kilometraje como número, sin comas.
-  transmision    Ej.: "Automática" o "Manual".
-  color           Color del vehículo.
-  uso             Ej.: "Particular", "Plataforma" o "Taxi".
-  estado          "disponible", "reservado", "proximamente", "no-disponible" u "oculto".
+"oculto" = la unidad existe pero no se publica.
+Las fotos NO controlan la visibilidad.
 
-ESTADOS
--------
-  disponible       Se publica y puede consultarse por WhatsApp.
-  reservado        Se publica como reservada y WhatsApp pregunta por alternativa/estado.
-  proximamente     Se publica como próxima a llegar.
-  no-disponible    Se mantiene visible, pero desactiva la consulta de esa unidad.
-  oculto            No aparece en la web, pero no tienes que borrar el bloque.
+Actualmente están precargados los IDs canónicos:
+  R001 a R100
+  LM01 a LM70
 
-FOTOS
------
-Cuando tengas una foto real, colócala en la carpeta del sitio (idealmente dentro
-de una carpeta "fotos") y escribe la ruta, por ejemplo:
+Los campos modelo, año, km, transmisión, color y uso pueden quedar vacíos.
 
-  "foto": "fotos/R090.webp"
+2) FOTOS
+---------
+No hace falta crear carpetas vacías para todas las unidades.
+Cuando una unidad tenga fotos, el optimizador genera una carpeta lista para arrastrar a:
 
-Si "foto" queda vacía, la tarjeta usa automáticamente la imagen genérica del
-modelo y marca que la foto real está pendiente.
+  assets/img/unidades/
 
-QUÉ SE ACTUALIZA AUTOMÁTICAMENTE
---------------------------------
-- Tarjeta de la unidad.
-- Año, kilometraje, transmisión, color y uso.
-- Estado visual.
-- Botón y mensaje de WhatsApp.
-- Cantidad de unidades disponibles en la portada.
-- Panel de inventario del hero.
+Ejemplo de salida:
 
-No hace falta editar las páginas HTML para agregar o retirar una unidad.
+  R090/
+    01.webp      <- foto principal
+    02.webp
+    03.webp
+    fotos.json   <- índice para una galería futura
+
+La tarjeta intenta cargar siempre:
+  assets/img/unidades/<UNIDAD>/01.webp
+
+Si no existe, usa automáticamente la imagen de muestra del modelo.
+
+3) FOTOS ADICIONALES
+---------------------
+La web no necesita un manifiesto global. Cada carpeta es autónoma.
+`fotos.json` pertenece a la propia unidad y se usará para el carrusel futuro.
+
+4) OPTIMIZADOR
+---------------
+El optimizador debe ser secuencial y portable:
+  - seleccionar una carpeta de entrada
+  - indicar el ID de unidad
+  - exigir una imagen principal llamada exactamente 1.*
+  - aceptar nombres libres para las demás imágenes
+  - convertir todo a WebP
+  - generar 01.webp, 02.webp, 03.webp...
+  - generar fotos.json
+  - devolver una carpeta <UNIDAD>/ lista para arrastrar al repositorio
+
+Consulta docs/ESTANDAR-IMAGENES.md y docs/PROMPT-OPTIMIZADOR-IMAGENES.md.
