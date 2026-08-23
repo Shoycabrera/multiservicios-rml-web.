@@ -23,7 +23,7 @@ window.INVENTARIO_UNIDADES = [
     "transmision": "Automática",
     "color": "Blanco",
     "uso": "Particular",
-    "estado": "disponible"
+    "estado": "proximamente"
   },
   {
     "modelo": "Kia Soluto",
